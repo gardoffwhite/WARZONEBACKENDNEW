@@ -1,19 +1,21 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
+// Middleware
 app.use(express.json());
+app.use(cors()); // เปิดใช้งาน CORS
 
-let users = [];  // This is a mock database. Replace with actual DB in production.
-let items = ["Item1", "Item2", "Item3", "Item4"];  // List of available items for gacha
+// Mock Database (ควรใช้ DB จริงในโปรเจกต์จริง)
+let users = [];
+let items = ["Item1", "Item2", "Item3", "Item4"];
 
 // Register Route
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
-
-  // Validate input
   if (!username || !password) {
     return res.status(400).send("Username and Password are required!");
   }
@@ -41,7 +43,6 @@ app.post('/login', async (req, res) => {
 // Gacha Route
 app.post('/gacha', (req, res) => {
   const { token } = req.body;
-
   try {
     const decoded = jwt.verify(token, 'secretKey');
     const randomItem = items[Math.floor(Math.random() * items.length)];
@@ -51,12 +52,13 @@ app.post('/gacha', (req, res) => {
   }
 });
 
-// Admin Route to add/remove tokens (Mock)
+// Admin Route to add/remove tokens (Mock for admin functionality)
 app.post('/admin/token', (req, res) => {
-  // Implement admin token functionality (Add or Remove tokens for users)
+  // Admin token management functionality can be added here
   res.send('Admin token functionality');
 });
 
+// Start the server
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server running on http://localhost:${port}`);
 });
