@@ -7,11 +7,12 @@ const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
-app.use(cors()); // เปิดใช้งาน CORS
+app.use(cors());
 
-// Mock Database (ควรใช้ DB จริงในโปรเจกต์จริง)
-let users = [];
-let items = ["Item1", "Item2", "Item3", "Item4"];
+// Mock Database (เพิ่มผู้ใช้ตัวอย่าง)
+let users = [
+  { username: 'testuser', password: '$2b$10$R4sfMkZlL5S6FAsfu1FhmuTz/U9m4QklFwDIsI6f8W7kQbwpLgfuG' } // password: 'testpassword'
+];
 
 // Register Route
 app.post('/register', async (req, res) => {
@@ -45,17 +46,12 @@ app.post('/gacha', (req, res) => {
   const { token } = req.body;
   try {
     const decoded = jwt.verify(token, 'secretKey');
+    const items = ["Item1", "Item2", "Item3", "Item4"];
     const randomItem = items[Math.floor(Math.random() * items.length)];
     res.json({ item: randomItem });
   } catch (error) {
     res.status(401).send("Invalid token");
   }
-});
-
-// Admin Route to add/remove tokens (Mock for admin functionality)
-app.post('/admin/token', (req, res) => {
-  // Admin token management functionality can be added here
-  res.send('Admin token functionality');
 });
 
 // Start the server
