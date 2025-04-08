@@ -1,0 +1,14 @@
+{
+    "admin": {
+        "username": "admin",
+        "password": "admin1234",
+        "tokens": 0,
+        "isAdmin": true
+    },
+    "user1": {
+        "username": "user1",
+        "password": "pass1234",
+        "tokens": 2,
+        "isAdmin": false
+    }
+}
